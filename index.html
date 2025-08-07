@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real Estate | Dream Property</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <!-- AlpineJS -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+  <style>
+    .header {
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(35, 139, 9, 0.9), rgba(6, 82, 6, 0.7)), url(images/arepo\ house.png);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .glass {
+      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .glow-btn {
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .glow-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(255, 50, 50, 0.9);
+    }
+
+    .category-box {
+      transition: transform 0.4s, background-color 0.4s;
+    }
+
+    .category-box:hover {
+      transform: scale(1.08) rotate(-1deg);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .animated-card {
+      transition: transform 0.4s, box-shadow 0.4s;
+      cursor: pointer;
+    }
+
+    .animated-card:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Smooth fade-in section wrapper */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  </style>
+</head>
+
+<body class="bg-green-900 text-white overflow-x-hidden">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50 bg-black/40 backdrop-blur-md shadow-lg transition-all duration-500">
+    <h1 class="text-2xl font-extrabold tracking-wide">HOUSIFY</h1>
+    <ul class="flex gap-6 text-sm md:text-base">
+      <li><a href="index.html" class="hover:text-red-500 transition">Home</a></li>
+      <li><a href="listings.html" class="hover:text-red-500 transition">Listings</a></li>
+      <li><a href="categories.html" class="hover:text-red-500 transition">Categories</a></li>
+      <li><a href="contact.html" class="hover:text-red-500 transition">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="header flex items-center justify-center text-center text-white">
+    <div class="relative z-10" data-aos="fade-up">
+      <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 drop-shadow-lg">
+        Find Your Dream <span id="typewriter" class="block"></span>
+      </h1>
+      <a href="listings.html">
+  <button id="browseBtn" class="bg-red-500 px-6 py-3 text-xl rounded-full glow-btn shadow-lg">
+    Browse Listings
+  </button>
+</a>
+      <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto">
+        Discover the best properties tailored to your needs. From luxurious villas to cozy apartments, we have it all.
+      </p>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="py-20 px-8 md:px-20 reveal" id="categories">
+    <h2 class="text-4xl font-bold text-center mb-12">Property Categories</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="glass category-box rounded-2xl p-6 text-center text-xl font-semibold">Land</div>
+      <div class="glass category-box rounded-2xl p-6 text-center text-xl font-semibold">Houses</div>
+      <div class="glass category-box rounded-2xl p-6 text-center text-xl font-semibold">Apartments</div>
+      <div class="glass category-box rounded-2xl p-6 text-center text-xl font-semibold">Commercial</div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="py-20 px-8 md:px-20 bg-red-300 text-black reveal">
+    <h2 class="text-4xl font-bold text-center mb-10">Pricing</h2>
+    <div class="flex justify-center gap-6">
+      <button class="bg-black hover:bg-green-900 text-white px-6 py-2 rounded-full transition transform hover:scale-110">Low</button>
+      <button class="bg-black hover:bg-green-900 text-white px-6 py-2 rounded-full transition transform hover:scale-110">Medium</button>
+      <button class="bg-black hover:bg-green-900 text-white px-6 py-2 rounded-full transition transform hover:scale-110">High</button>
+    </div>
+  </section>
+
+  <!-- Popular Listings -->
+  <section class="py-20 px-8 md:px-20 reveal">
+    <h2 class="text-4xl font-bold text-center mb-12">Popular Listings</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="glass animated-card p-4 rounded-lg">
+        <img src="images/arepo house.png" alt="Listing" class="rounded-lg mb-4 w-full h-48 object-cover" />
+        <p class="text-lg font-medium">4 Bed House in Lagos</p>
+      </div>
+      <div class="glass animated-card p-4 rounded-lg">
+        <img src="images/leeki.png" alt="Listing" class="rounded-lg mb-4 w-full h-48 object-cover" />
+        <p class="text-lg font-medium">Luxury Apartment in Abuja</p>
+      </div>
+      <div class="glass animated-card p-4 rounded-lg">
+        <img src="images/lagoshouse.png" alt="Listing" class="rounded-lg mb-4 w-full h-48 object-cover" />
+        <p class="text-lg font-medium">Beachfront Villa</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-20 px-8 md:px-20 bg-red-400 text-black reveal">
+    <h2 class="text-4xl font-bold text-center mb-10">Testimonials</h2>
+    <div class="text-center text-xl italic">
+      “The best real estate experience I've ever had. Everything was seamless and professional.”<br>
+      <span class="text-green-900 font-bold">– Orenzi DEV</span>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-center py-6 text-sm">
+    &copy; 2025 HOUSIFY. All rights reserved.
+  </footer>
+
+   <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 1200 });
+  </script>
+
+  <!-- Typewriter -->
+  <script src="https://unpkg.com/typewriter-effect@2.18.2/dist/core.js"></script>
+  <script>
+    const typewriter = new Typewriter(document.getElementById('typewriter'), {
+      loop: true,
+      delay: 80
+    });
+    typewriter
+      .typeString("LAND").pauseFor(1800).deleteAll()
+      .typeString("HOUSES").pauseFor(1800).deleteAll()
+      .typeString("VILLAS").pauseFor(1800).deleteAll()
+      .typeString("COMMERCIAL SPACES").pauseFor(1800).start();
+  </script>
+
+  <!-- GSAP ScrollReveal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.utils.toArray(".reveal").forEach(section => {
+        gsap.to(section, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+          }
+        });
+      });
+
+      // GSAP Hover Animation for Browse Listings Button
+      const browseBtn = document.getElementById("browseBtn");
+      if (browseBtn) {
+        browseBtn.addEventListener("mouseenter", () => {
+          gsap.to(browseBtn, {
+            scale: 1.1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+        browseBtn.addEventListener("mouseleave", () => {
+          gsap.to(browseBtn, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        });
+      }
+    });
+  </script>
+
+  <!-- Smooth internal scroll -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Categories | Housify</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+
+  <!-- Custom Styles -->
+  <style>
+    .glass {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .typewriter h1 {
+      overflow: hidden;
+      border-right: .15em solid white;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .1em;
+      animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: white }
+    }
+  </style>
+</head>
+
+<body class="bg-green-900 text-white">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50 bg-black/40 backdrop-blur-md">
+    <h1 class="text-2xl font-bold">HOUSIFY</h1>
+    <ul class="flex gap-6">
+      <li><a href="index.html" class="hover:text-red-400 transition">Home</a></li>
+      <li><a href="listings.html" class="hover:text-red-400 transition">Listings</a></li>
+      <li><a href="categories.html" class="text-red-400 font-semibold">Categories</a></li>
+      <li><a href="contact.html" class="hover:text-red-400 transition">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header class="pt-32 pb-10 text-center">
+    <div class="typewriter">
+      <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">Browse by Category</h1>
+    </div>
+    <p class="text-lg text-green-300" data-aos="fade-up">Explore different types of properties</p>
+  </header>
+
+  <!-- Categories Grid -->
+  <section class="py-16 px-6 md:px-20">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up">
+        <img src="images/land.jpg" alt="Land" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Land</h3>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up" data-aos-delay="100">
+        <img src="images/house.jpg" alt="House" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Houses</h3>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up" data-aos-delay="200">
+        <img src="images/apartment.jpg" alt="Apartment" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Apartments</h3>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up" data-aos-delay="300">
+        <img src="images/villa.jpg" alt="Villa" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Villas</h3>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up" data-aos-delay="400">
+        <img src="images/office.jpg" alt="Office" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Commercial</h3>
+      </div>
+
+      <div class="glass p-6 rounded-2xl text-center hover:scale-105 transition duration-300" data-aos="fade-up" data-aos-delay="500">
+        <img src="images/magodo.png" alt="Studio" class="rounded-xl w-full h-48 object-cover mb-4">
+        <h3 class="text-2xl font-bold">Studios</h3>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-black text-center py-6 text-sm">
+    &copy; 2025 HOUSIFY. All rights reserved.
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true });
+  </script>
+
+</body>
+</html>

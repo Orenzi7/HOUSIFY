@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advanced Listings | Housify</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    .typewriter h1 {
+      overflow: hidden;
+      border-right: .15em solid #fff;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .1em;
+      animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: white; }
+    }
+
+    .glass {
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+    .glass-dark {
+      backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .active-btn {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .property-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .property-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-overlay {
+      background: linear-gradient(45deg, rgba(16, 185, 129, 0.8), rgba(239, 68, 68, 0.8));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .property-card:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .price-badge {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .floating-search {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+
+    .search-expanded {
+      width: 300px;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #064e3b, #065f46, #047857);
+    }
+
+    .property-stats {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      color: #a7f3d0;
+    }
+
+    .view-toggle {
+      position: fixed;
+      top: 120px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .list-view .property-card {
+      display: flex;
+      align-items: center;
+      max-width: none;
+    }
+
+    .list-view .property-card img {
+      width: 200px;
+      height: 150px;
+      flex-shrink: 0;
+    }
+
+    .list-view .property-info {
+      flex: 1;
+      padding-left: 1rem;
+    }
+
+    .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .favorite-btn:hover {
+      background: rgba(239, 68, 68, 0.8);
+      transform: scale(1.1);
+    }
+
+    .favorite-btn.active {
+      background: #ef4444;
+      color: white;
+    }
+
+    .modal {
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .sort-dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(16px);
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+    }
+
+    .dropdown-content.show {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="gradient-bg text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50 glass-dark">
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-green-400 to-red-400 bg-clip-text text-transparent">
+      HOUSIFY
+    </h1>
+    <!-- Navigation Links -->
+    <ul class="flex gap-6">
+      <li><a href="index.html" class="hover:text-red-700 transition">Home</a></li>
+      <li><a href="listings.html" class="hover:text-red-700 transition">Listings</a></li>
+      <li><a href="categories.html" class="hover:text-red-700 transition">Categories</a></li>
+      <li><a href="contact.html" class="hover:text-red-700 transition">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header class="pt-32 pb-10 text-center">
+    <div class="typewriter">
+      <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">Premium Property Listings</h1>
+    </div>
+    <p class="text-lg text-green-300 mb-6" data-aos="fade-up">
+      Discover luxury properties with advanced search and filtering
+    </p>
+    <div class="flex justify-center gap-4 text-sm text-green-200" data-aos="fade-up" data-aos-delay="200">
+      <span><i class="fas fa-home mr-2"></i><span id="propertyCount">12</span> Properties Available</span>
+      <span><i class="fas fa-map-marker-alt mr-2"></i>Lagos, Abuja & More</span>
+      <span><i class="fas fa-star mr-2"></i>Premium Verified Listings</span>
+    </div>
+  </header>
+
+  <!-- Advanced Search Bar -->
+  <section class="px-6 md:px-20 mb-10">
+    <div class="glass p-6 rounded-2xl max-w-4xl mx-auto" data-aos="zoom-in">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="relative">
+          <input type="text" id="searchInput" placeholder="Search properties..." 
+            class="w-full p-3 rounded-lg bg-black/30 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-green-400">
+          <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+        </div>
+        <div class="relative">
+          <select id="locationFilter" class="w-full p-3 rounded-lg bg-black/30 border border-white/20 text-white focus:outline-none focus:border-green-400">
+            <option value="">All Locations</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Abuja">Abuja</option>
+            <option value="Port Harcourt">Port Harcourt</option>
+          </select>
+        </div>
+        <div class="relative">
+          <input type="range" id="priceRange" min="10000000" max="500000000" step="10000000" value="500000000"
+            class="w-full h-3 bg-black/30 rounded-lg appearance-none slider">
+          <div class="text-sm text-gray-300 mt-1">Max: ₦<span id="priceValue">500M</span></div>
+        </div>
+        <button onclick="resetFilters()" class="bg-red-500 hover:bg-red-600 px-4 py-3 rounded-lg transition duration-300">
+          <i class="fas fa-refresh mr-2"></i>Reset
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Sort Controls -->
+  <section class="px-6 md:px-20 mb-10">
+    <div class="flex flex-wrap justify-between items-center gap-4">
+      <!-- Category Filters -->
+      <div class="flex flex-wrap gap-3" data-aos="fade-right">
+        <button onclick="filterListings('all', this)" class="filter-btn bg-red-500 hover:bg-green-600 px-5 py-2 rounded-full transition duration-300 active-btn">
+          <i class="fas fa-th-large mr-2"></i>All
+        </button>
+        <button onclick="filterListings('houses', this)" class="filter-btn bg-red-500 hover:bg-green-600 px-5 py-2 rounded-full transition duration-300">
+          <i class="fas fa-home mr-2"></i>Houses
+        </button>
+        <button onclick="filterListings('apartments', this)" class="filter-btn bg-red-500 hover:bg-green-600 px-5 py-2 rounded-full transition duration-300">
+          <i class="fas fa-building mr-2"></i>Apartments
+        </button>
+        <button onclick="filterListings('land', this)" class="filter-btn bg-red-500 hover:bg-green-600 px-5 py-2 rounded-full transition duration-300">
+          <i class="fas fa-map mr-2"></i>Land
+        </button>
+        <button onclick="filterListings('commercial', this)" class="filter-btn bg-red-500 hover:bg-green-600 px-5 py-2 rounded-full transition duration-300">
+          <i class="fas fa-briefcase mr-2"></i>Commercial
+        </button>
+      </div>
+
+      <!-- Sort & View Controls -->
+      <div class="flex gap-3" data-aos="fade-left">
+        <div class="sort-dropdown">
+          <button onclick="toggleSort()" class="glass px-4 py-2 rounded-full hover:bg-white/10 transition duration-300">
+            <i class="fas fa-sort mr-2"></i>Sort by Price
+          </button>
+          <div id="sortDropdown" class="dropdown-content">
+            <button onclick="sortListings('price-low')" class="w-full p-2 hover:bg-white/10 text-left">Price: Low to High</button>
+            <button onclick="sortListings('price-high')" class="w-full p-2 hover:bg-white/10 text-left">Price: High to Low</button>
+            <button onclick="sortListings('newest')" class="w-full p-2 hover:bg-white/10 text-left">Newest First</button>
+          </div>
+        </div>
+        <button onclick="toggleView()" class="glass px-4 py-2 rounded-full hover:bg-white/10 transition duration-300">
+          <i id="viewIcon" class="fas fa-th mr-2"></i><span id="viewText">Grid View</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listings Grid -->
+  <section class="px-6 md:px-20 pb-16">
+    <div id="listingGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Enhanced Property Cards -->
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-houses" data-aos="fade-up" data-price="120000000" data-location="Lagos" data-date="2025-01-15">
+        <div class="relative">
+          <img src="images/banana island.png" alt="Luxury House" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('house1')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦120M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Luxury 4-Bed Detached Duplex</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Lekki Phase 1, Lagos
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-bed"></i> 4</span>
+            <span class="stat-item"><i class="fas fa-bath"></i> 5</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 3</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 450m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 2 days ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-apartments" data-aos="fade-up" data-aos-delay="100" data-price="80000000" data-location="Abuja" data-date="2025-01-12">
+        <div class="relative">
+          <img src="images/banana island2.png" alt="Luxury Apartment" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('apt1')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦80M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Penthouse Apartment</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Maitama District, Abuja
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-bed"></i> 3</span>
+            <span class="stat-item"><i class="fas fa-bath"></i> 4</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 2</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 280m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 5 days ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-land" data-aos="fade-up" data-aos-delay="200" data-price="15000000" data-location="Lagos" data-date="2025-01-10">
+        <div class="relative">
+          <img src="images/ikeja house .png" alt="Prime Land" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('land1')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦15M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Prime Development Land</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Ibeju-Lekki, Lagos
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 500m²</span>
+            <span class="stat-item"><i class="fas fa-certificate"></i> C of O Ready</span>
+            <span class="stat-item"><i class="fas fa-road"></i> Tarred Road</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 1 week ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-commercial" data-aos="fade-up" data-aos-delay="300" data-price="250000000" data-location="Lagos" data-date="2025-01-08">
+        <div class="relative">
+          <img src="images/lagoshouse.png" alt="Office Complex" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('commercial1')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦250M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Modern Office Complex</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Victoria Island, Lagos
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-building"></i> 8 Floors</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 50 Spaces</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 2000m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 2 weeks ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional properties for demonstration -->
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-houses" data-aos="fade-up" data-price="95000000" data-location="Port Harcourt" data-date="2025-01-05">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&h=300&fit=crop" alt="Modern House" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('house2')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦95M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Contemporary 3-Bed Villa</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>GRA Phase 2, Port Harcourt
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-bed"></i> 3</span>
+            <span class="stat-item"><i class="fas fa-bath"></i> 4</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 2</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 320m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 3 weeks ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+div class="listing property-card glass rounded-2xl overflow-hidden category-commercial" data-aos="fade-up" data-aos-delay="300" data-price="250000000" data-location="Lagos" data-date="2025-01-08">
+        <div class="relative">
+          <img src="images/lagoshouse.png" alt="Office Complex" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('commercial1')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦250M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Modern Office Complex</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Victoria Island, Lagos
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-building"></i> 8 Floors</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 50 Spaces</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 2000m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 2 weeks ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional properties for demonstration -->
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-houses" data-aos="fade-up" data-price="95000000" data-location="Port Harcourt" data-date="2025-01-05">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&h=300&fit=crop" alt="Modern House" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('house2')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦95M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Contemporary 3-Bed Villa</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>GRA Phase 2, Port Harcourt
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-bed"></i> 3</span>
+            <span class="stat-item"><i class="fas fa-bath"></i> 4</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 2</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 320m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 3 weeks ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="listing property-card glass rounded-2xl overflow-hidden category-apartments" data-aos="fade-up" data-aos-delay="100" data-price="45000000" data-location="Abuja" data-date="2025-01-03">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop" alt="Cozy Apartment" class="w-full h-60 object-cover"/>
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
+            <i class="far fa-heart"></i>
+          </button>
+          <div class="image-overlay absolute inset-0 flex items-center justify-center opacity-0">
+            <button onclick="openModal('apt2')" class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+              <i class="fas fa-eye mr-2"></i>View Details
+            </button>
+          </div>
+          <div class="price-badge absolute bottom-4 left-4 px-3 py-1 rounded-full text-white font-bold">
+            ₦45M
+          </div>
+        </div>
+        <div class="p-6 property-info">
+          <h3 class="text-xl font-bold mb-2">Serviced 2-Bed Apartment</h3>
+          <p class="text-green-200 mb-3 flex items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>Wuse 2, Abuja
+          </p>
+          <div class="property-stats">
+            <span class="stat-item"><i class="fas fa-bed"></i> 2</span>
+            <span class="stat-item"><i class="fas fa-bath"></i> 2</span>
+            <span class="stat-item"><i class="fas fa-car"></i> 1</span>
+            <span class="stat-item"><i class="fas fa-ruler-combined"></i> 150m²</span>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-sm text-gray-300">Listed 1 month ago</span>
+            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg text-sm font-semibold transition">
+              Contact Agent
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Load More Button -->
+    <div class="text-center mt-12" data-aos="fade-up">
+      <button onclick="loadMore()" class="glass px-8 py-3 rounded-full hover:bg-white/10 transition duration-300">
+        <i class="fas fa-plus mr-2"></i>Load More Properties
+      </button>
+    </div>
+  </section>
+
+  <!-- Property Details Modal -->
+  <div id="propertyModal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="glass max-w-4xl w-full max-h-screen overflow-y-auto rounded-2xl">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">Property Details</h2>
+          <button onclick="closeModal()" class="text-white hover:text-red-400 text-2xl">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="modalContent">
+          <!-- Modal content will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="glass-dark text-center py-8">
+    <div class="px-6 md:px-20">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <h3 class="text-xl font-bold mb-2">HOUSIFY</h3>
+          <p class="text-gray-300">Premium Real Estate Platform</p>
+        </div>
+        <div class="flex gap-6">
+          <a href="#" class="text-gray-300 hover:text-white transition">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white transition">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white transition">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white transition">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-6 pt-4 text-sm text-gray-400">
+        &copy; 2025 HOUSIFY. All rights reserved. | Privacy Policy | Terms of Service
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animations
+    AOS.init({ 
+      once: true,
+      duration: 800,
+      easing: 'ease-out-cubic'
+    });
+
+    // Global variables
+    let currentView = 'grid';
+    let currentFilter = 'all';
+    let currentSort = 'newest';
+    let allListings = [];
+    let filteredListings = [];
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeListings();
+      setupEventListeners();
+      updatePropertyCount();
+      
+      // Set initial active button
+      document.querySelector('.filter-btn').classList.add('active-btn');
+    });
+
+    // Initialize listings array from DOM
+    function initializeListings() {
+      const listings = document.querySelectorAll('.listing');
+      allListings = Array.from(listings).map(listing => {
+        return {
+          element: listing,
+          price: parseInt(listing.dataset.price),
+          location: listing.dataset.location,
+          date: new Date(listing.dataset.date),
+          category: Array.from(listing.classList).find(cls => cls.startsWith('category-')).replace('category-', '')
+        };
+      });
+      filteredListings = [...allListings];
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Search input
+      document.getElementById('searchInput').addEventListener('input', debounce(handleSearch, 300));
+      
+      // Location filter
+      document.getElementById('locationFilter').addEventListener('change', handleLocationFilter);
+      
+      // Price range
+      const priceRange = document.getElementById('priceRange');
+      priceRange.addEventListener('input', handlePriceRange);
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.sort-dropdown')) {
+          document.getElementById('sortDropdown').classList.remove('show');
+        }
+      });
+    }
+
+    // Debounce function for search
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Filter listings by category
+    function filterListings(category, btn) {
+      currentFilter = category;
+      
+      // Update active button
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-btn'));
+      btn.classList.add('active-btn');
+
+      applyAllFilters();
+    }
+
+    // Handle search functionality
+    function handleSearch() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      filteredListings = allListings.filter(listing => {
+        const title = listing.element.querySelector('h3').textContent.toLowerCase();
+        const location = listing.element.querySelector('.text-green-200').textContent.toLowerCase();
+        return title.includes(searchTerm) || location.includes(searchTerm);
+      });
+
+      applyAllFilters();
+    }
+
+    // Handle location filter
+    function handleLocationFilter() {
+      const selectedLocation = document.getElementById('locationFilter').value;
+      
+      if (selectedLocation) {
+        filteredListings = allListings.filter(listing => 
+          listing.location.includes(selectedLocation)
+        );
+      } else {
+        filteredListings = [...allListings];
+      }
+
+      applyAllFilters();
+    }
+
+    // Handle price range
+    function handlePriceRange() {
+      const maxPrice = parseInt(document.getElementById('priceRange').value);
+      const priceValue = document.getElementById('priceValue');
+      
+      // Update price display
+      if (maxPrice >= 1000000000) {
+        priceValue.textContent = (maxPrice / 1000000000).toFixed(1) + 'B';
+      } else {
+        priceValue.textContent = (maxPrice / 1000000).toFixed(0) + 'M';
+      }
+
+      filteredListings = allListings.filter(listing => listing.price <= maxPrice);
+      applyAllFilters();
+    }
+
+    // Apply all filters and sorting
+    function applyAllFilters() {
+      let result = filteredListings;
+
+      // Apply category filter
+      if (currentFilter !== 'all') {
+        result = result.filter(listing => listing.category === currentFilter);
+      }
+
+      // Apply search filter
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      if (searchTerm) {
+        result = result.filter(listing => {
+          const title = listing.element.querySelector('h3').textContent.toLowerCase();
+          const location = listing.element.querySelector('.text-green-200').textContent.toLowerCase();
+          return title.includes(searchTerm) || location.includes(searchTerm);
+        });
+      }
+
+      // Apply location filter
+      const selectedLocation = document.getElementById('locationFilter').value;
+      if (selectedLocation) {
+        result = result.filter(listing => listing.location.includes(selectedLocation));
+      }
+
+      // Apply price filter
+      const maxPrice = parseInt(document.getElementById('priceRange').value);
+      result = result.filter(listing => listing.price <= maxPrice);
+
+      // Apply current sorting
+      sortListingsArray(result, currentSort);
+
+      // Show/hide listings
+      showFilteredListings(result);
+      updatePropertyCount();
+    }
+
+    // Show filtered listings
+    function showFilteredListings(filteredArray) {
+      allListings.forEach(listing => {
+        if (filteredArray.includes(listing)) {
+          listing.element.style.display = 'block';
+        } else {
+          listing.element.style.display = 'none';
+        }
+      });
+    }
+
+    // Sort listings
+    function sortListings(sortType) {
+      currentSort = sortType;
+      document.getElementById('sortDropdown').classList.remove('show');
+      
+      const visibleListings = filteredListings.filter(listing => 
+        listing.element.style.display !== 'none'
+      );
+      
+      sortListingsArray(visibleListings, sortType);
+      reorderListings(visibleListings);
+    }
+
+    // Sort listings array
+    function sortListingsArray(listings, sortType) {
+      switch(sortType) {
+        case 'price-low':
+          listings.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-high':
+          listings.sort((a, b) => b.price - a.price);
+          break;
+        case 'newest':
+          listings.sort((a, b) => b.date - a.date);
+          break;
+      }
+    }
+
+    // Reorder DOM elements
+    function reorderListings(sortedListings) {
+      const container = document.getElementById('listingGrid');
+      sortedListings.forEach(listing => {
+        container.appendChild(listing.element);
+      });
+    }
+
+    // Toggle sort dropdown
+    function toggleSort() {
+      const dropdown = document.getElementById('sortDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // Toggle view (grid/list)
+    function toggleView() {
+      const container = document.getElementById('listingGrid');
+      const viewIcon = document.getElementById('viewIcon');
+      const viewText = document.getElementById('viewText');
+      
+      if (currentView === 'grid') {
+        currentView = 'list';
+        container.classList.remove('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3');
+        container.classList.add('list-view', 'grid-cols-1');
+        viewIcon.className = 'fas fa-th-large mr-2';
+        viewText.textContent = 'Grid View';
+      } else {
+        currentView = 'grid';
+        container.classList.remove('list-view', 'grid-cols-1');
+        container.classList.add('grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-3');
+        viewIcon.className = 'fas fa-list mr-2';
+        viewText.textContent = 'List View';
+      }
+    }
+
+    // Toggle favorite
+    function toggleFavorite(btn) {
+      const icon = btn.querySelector('i');
+      if (icon.classList.contains('far')) {
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        btn.classList.add('active');
+      } else {
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        btn.classList.remove('active');
+      }
+    }
+
+    // Open property modal
+    function openModal(propertyId) {
+      const modal = document.getElementById('propertyModal');
+      const modalContent = document.getElementById('modalContent');
+      
+      // Sample modal content - in a real app, this would fetch data based on propertyId
+      modalContent.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <img src="images/banana island.png" alt="Property" class="w-full h-64 object-cover rounded-lg mb-4"/>
+            <div class="grid grid-cols-3 gap-2">
+              <img src="images/banana island2.png" alt="Gallery" class="w-full h-20 object-cover rounded cursor-pointer"/>
+              <img src="images/ikeja house .png" alt="Gallery" class="w-full h-20 object-cover rounded cursor-pointer"/>
+              <img src="images/lagoshouse.png" alt="Gallery" class="w-full h-20 object-cover rounded cursor-pointer"/>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold mb-4">Luxury 4-Bed Detached Duplex</h3>
+            <div class="text-3xl font-bold text-red-400 mb-4">₦120,000,000</div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bed text-green-400"></i>
+                <span>4 Bedrooms</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bath text-green-400"></i>
+                <span>5 Bathrooms</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-car text-green-400"></i>
+                <span>3 Parking</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-ruler-combined text-green-400"></i>
+                <span>450m²</span>
+              </div>
+            </div>
+            <p class="text-gray-300 mb-6">
+              Stunning luxury duplex in the heart of Lekki Phase 1. This property features modern amenities, 
+              spacious rooms, and is located in a secure, gated community with 24/7 security.
+            </p>
+            <div class="flex gap-4">
+              <button class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg font-semibold transition flex-1">
+                <i class="fas fa-phone mr-2"></i>Contact Agent
+              </button>
+              <button class="bg-red-500 hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition flex-1">
+                <i class="fas fa-calendar mr-2"></i>Schedule Tour
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModal() {
+      const modal = document.getElementById('propertyModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Reset all filters
+    function resetFilters() {
+      // Reset form inputs
+      document.getElementById('searchInput').value = '';
+      document.getElementById('locationFilter').value = '';
+      document.getElementById('priceRange').value = '500000000';
+      document.getElementById('priceValue').textContent = '500M';
+      
+      // Reset filter state
+      currentFilter = 'all';
+      filteredListings = [...allListings];
+      
+      // Reset active button
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-btn'));
+      document.querySelector('.filter-btn').classList.add('active-btn');
+      
+      // Show all listings
+      applyAllFilters();
+    }
+
+    // Update property count
+    function updatePropertyCount() {
+      const visibleCount = document.querySelectorAll('.listing[style*="block"], .listing:not([style*="none"])').length;
+      document.getElementById('propertyCount').textContent = visibleCount;
+    }
+
+    // Load more properties (simulated)
+    function loadMore() {
+      // In a real application, this would load more data from an API
+      const button = event.target.closest('button');
+      button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+      
+      setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-check mr-2"></i>All Properties Loaded';
+        button.disabled = true;
+        button.classList.add('opacity-50');
+      }, 2000);
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('propertyModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+        document.getElementById('sortDropdown').classList.remove('show');
+      }
+    });
+  </script>
+
+</body>
+</html>
