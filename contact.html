@@ -11,73 +11,673 @@
   <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
 
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
   <!-- Custom Styles -->
   <style>
     .glass {
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-dark {
+      backdrop-filter: blur(15px);
+      background: rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .contact-card {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(239, 68, 68, 0.1));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(239, 68, 68, 0.2));
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(34, 197, 94, 0.3);
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.6s;
+    }
+
+    .contact-card:hover::before {
+      left: 100%;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #22c55e;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .form-input:focus + .form-label,
+    .form-input:not(:placeholder-shown) + .form-label {
+      transform: translateY(-2.5rem) scale(0.85);
+      color: #22c55e;
+    }
+
+    .form-label {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      transform-origin: left top;
+    }
+
+    .submit-btn {
+      background: linear-gradient(45deg, #22c55e, #ef4444);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #22c55e, #ef4444);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon:hover {
+      transform: rotateY(360deg) scale(1.1);
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+    }
+
+    .map-container {
+      height: 400px;
+      background: linear-gradient(45deg, #22c55e, #ef4444);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-placeholder {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%),
+        linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(239, 68, 68, 0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid #22c55e;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .1em;
+      animation: typing 3s steps(20, end), blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #22c55e }
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(34, 197, 94, 0.6);
+      border-radius: 50%;
+      animation: particleFloat 8s infinite linear;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    .success-message {
+      background: linear-gradient(45deg, #22c55e, #10b981);
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-top: 1rem;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+    }
+
+    .success-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .office-hours {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 15px;
+      padding: 1.5rem;
+    }
+
+    .live-chat-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #22c55e, #ef4444);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .faq-item {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 1rem;
+    }
+
+    .faq-answer.open {
+      max-height: 200px;
+      padding: 0 1rem 1rem 1rem;
     }
   </style>
 </head>
 
 <body class="bg-green-900 text-white">
+  <!-- Animated Particles Background -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Live Chat Button -->
+  <div class="live-chat-btn" onclick="toggleLiveChat()">
+    <i class="fas fa-comments"></i>
+  </div>
 
   <!-- Navbar -->
-  <nav class="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50 bg-black/40 backdrop-blur-md">
-    <h1 class="text-2xl font-bold">HOUSIFY</h1>
+  <nav class="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50 glass-dark">
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-green-400 to-red-400 bg-clip-text text-transparent">
+      HOUSIFY
+    </h1>
+    <!-- Navigation Links -->
     <ul class="flex gap-6">
-      <li><a href="index.html" class="hover:text-red-400 transition">Home</a></li>
-      <li><a href="listings.html" class="hover:text-red-400 transition">Listings</a></li>
-      <li><a href="categories.html" class="hover:text-red-400 transition">Categories</a></li>
-      <li><a href="contact.html" class="text-red-400 font-semibold">Contact</a></li>
+      <li><a href="index.html" class="hover:text-red-700 transition">Home</a></li>
+      <li><a href="listings.html" class="hover:text-red-700 transition">Listings</a></li>
+      <li><a href="categories.html" class="hover:text-red-700 transition">Categories</a></li>
+      <li><a href="contact.html" class="hover:text-red-700 transition">Contact</a></li>
     </ul>
   </nav>
 
   <!-- Header -->
   <header class="pt-32 pb-10 text-center">
-    <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">Get in Touch</h1>
-    <p class="text-lg text-green-300" data-aos="fade-up">We'd love to hear from you</p>
+    <div class="typewriter floating">
+      <h1 class="text-5xl font-bold mb-4" data-aos="fade-down">Get in Touch</h1>
+    </div>
+    <p class="text-lg text-green-300 mb-6" data-aos="fade-up">We'd love to hear from you</p>
+    
+    <!-- Quick Stats -->
+    <div class="flex justify-center gap-8 mb-8" data-aos="fade-up" data-aos-delay="200">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-green-400">24/7</div>
+        <div class="text-sm text-gray-300">Support</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-red-400">&lt;1hr</div>
+        <div class="text-sm text-gray-300">Response</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-yellow-400">1000+</div>
+        <div class="text-sm text-gray-300">Happy Clients</div>
+      </div>
+    </div>
   </header>
 
-  <!-- Contact Form -->
+  <!-- Main Contact Section -->
   <section class="py-16 px-6 md:px-20">
-    <div class="max-w-4xl mx-auto bg-white/5 p-8 rounded-2xl shadow-xl glass" data-aos="zoom-in">
-      <form action="https://formspree.io/f/your-form-id" method="POST" class="grid gap-6">
-        <div>
-          <label class="block text-sm mb-2">Full Name</label>
-          <input type="text" name="name" required class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-red-400" placeholder="John Doe"/>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      
+      <!-- Contact Form -->
+      <div class="lg:col-span-2">
+        <div class="glass p-8 rounded-2xl" data-aos="fade-right">
+          <h2 class="text-2xl font-bold mb-6 flex items-center">
+            <i class="fas fa-envelope mr-3 text-green-400"></i>
+            Send us a Message
+          </h2>
+          
+          <form id="contactForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="form-group">
+                <input type="text" id="firstName" name="firstName" class="form-input" placeholder=" " required>
+                <label for="firstName" class="form-label">First Name</label>
+              </div>
+              <div class="form-group">
+                <input type="text" id="lastName" name="lastName" class="form-input" placeholder=" " required>
+                <label for="lastName" class="form-label">Last Name</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="email" id="email" name="email" class="form-input" placeholder=" " required>
+              <label for="email" class="form-label">Email Address</label>
+            </div>
+
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone" class="form-input" placeholder=" ">
+              <label for="phone" class="form-label">Phone Number</label>
+            </div>
+
+            <div class="form-group">
+              <select id="subject" name="subject" class="form-input" required>
+                <option value="">Select Subject</option>
+                <option value="buying">Buying Property</option>
+                <option value="selling">Selling Property</option>
+                <option value="renting">Renting</option>
+                <option value="investment">Investment Advice</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <textarea id="message" name="message" rows="6" class="form-input" placeholder=" " required></textarea>
+              <label for="message" class="form-label">Your Message</label>
+            </div>
+
+            <div class="flex items-center mb-4">
+              <input type="checkbox" id="newsletter" name="newsletter" class="mr-3">
+              <label for="newsletter" class="text-sm">Subscribe to our newsletter for property updates</label>
+            </div>
+
+            <button type="submit" class="submit-btn w-full">
+              <i class="fas fa-paper-plane mr-2"></i>
+              Send Message
+            </button>
+
+            <div id="successMessage" class="success-message">
+              <i class="fas fa-check-circle mr-2"></i>
+              Thank you! Your message has been sent successfully.
+            </div>
+          </form>
         </div>
-        <div>
-          <label class="block text-sm mb-2">Email Address</label>
-          <input type="email" name="email" required class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-red-400" placeholder="you@example.com"/>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="space-y-6">
+        <!-- Contact Cards -->
+        <div class="contact-card glass p-6 rounded-2xl" data-aos="fade-left">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-red-400 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-phone text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-bold">Call Us</h3>
+              <p class="text-green-300">+234 800 123 4567</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <label class="block text-sm mb-2">Message</label>
-          <textarea name="message" rows="6" required class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-red-400" placeholder="Type your message here..."></textarea>
+
+        <div class="contact-card glass p-6 rounded-2xl" data-aos="fade-left" data-aos-delay="100">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-red-400 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-envelope text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-bold">Email Us</h3>
+              <p class="text-green-300">info@housify.com</p>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="bg-red-500 hover:bg-green-700 px-6 py-3 rounded-full text-lg transition transform hover:scale-105">
-          Send Message
-        </button>
-      </form>
+
+        <div class="contact-card glass p-6 rounded-2xl" data-aos="fade-left" data-aos-delay="200">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-red-400 rounded-full flex items-center justify-center mr-4">
+              <i class="fas fa-map-marker-alt text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-bold">Visit Us</h3>
+              <p class="text-green-300">Lekki, Lagos, Nigeria</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Office Hours -->
+        <div class="office-hours" data-aos="fade-left" data-aos-delay="300">
+          <h3 class="font-bold mb-4 flex items-center">
+            <i class="fas fa-clock mr-2 text-green-400"></i>
+            Office Hours
+          </h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span>Monday - Friday</span>
+              <span class="text-green-300">8:00 AM - 6:00 PM</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Saturday</span>
+              <span class="text-green-300">9:00 AM - 4:00 PM</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Sunday</span>
+              <span class="text-red-300">Closed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="glass p-6 rounded-2xl" data-aos="fade-left" data-aos-delay="400">
+          <h3 class="font-bold mb-4">Follow Us</h3>
+          <div class="flex gap-4">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+  <!-- Map Section -->
+   <!-- Interactive Map -->
+<section class="py-16 px-6 md:px-20" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-8">Find Our Office</h2>
 
-  <!-- Contact Info (Optional) -->
-  <section class="pb-20 text-center" data-aos="fade-up">
-    <p class="text-xl">📞 Phone: <span class="text-green-300">+234 800 123 4567</span></p>
-    <p class="text-xl mt-2">📧 Email: <span class="text-green-300">info@housify.com</span></p>
-    <p class="text-xl mt-2">📍 Address: <span class="text-green-300">Lekki, Lagos, Nigeria</span></p>
+    <div class="w-full h-[450px] overflow-hidden rounded-xl shadow-lg border border-gray-200">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.619521748944!2d3.4739977739742613!3d6.4428768240971195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf44bc2522199%3A0x83cd4b7fe4b6640!2s28%20Utomi%20Aire%20Ave%2C%20Lekki%20Phase%20I%2C%20Lekki%20106104%2C%20Lagos!5e0!3m2!1sen!2sng!4v1755162193838!5m2!1sen!2sng"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+  </div>
+</section>
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+
+  <!-- FAQ Section -->
+  <section class="py-16 px-6 md:px-20" data-aos="fade-up">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <span>How quickly can I expect a response?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-300">We typically respond to all inquiries within 1 hour during business hours, and within 24 hours on weekends.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <span>Do you offer property viewing services?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-300">Yes, we offer both virtual and in-person property viewings. Schedule your viewing through our contact form or call us directly.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            <span>What areas do you cover in Lagos?</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-300">We cover all major areas in Lagos including Lekki, Victoria Island, Ikoyi, Ajah, and surrounding neighborhoods.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
   <footer class="bg-black text-center py-6 text-sm">
     &copy; 2025 HOUSIFY. All rights reserved.
+    <div class="mt-2">
+      <i class="fas fa-heart text-red-500"></i> Your trusted property partner
+    </div>
   </footer>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init({ once: true });</script>
+  <script>
+    AOS.init({ once: true });
 
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        
+        if (Math.random() > 0.5) {
+          particle.style.background = 'rgba(239, 68, 68, 0.6)';
+        }
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Form handling
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Simulate form submission
+      const submitBtn = document.querySelector('.submit-btn');
+      const successMessage = document.getElementById('successMessage');
+      
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Message Sent!';
+        successMessage.classList.add('show');
+        
+        setTimeout(() => {
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send Message';
+          submitBtn.disabled = false;
+          successMessage.classList.remove('show');
+          this.reset();
+        }, 3000);
+      }, 2000);
+    });
+
+    // FAQ toggle
+    function toggleFAQ(element) {
+      const answer = element.nextElementSibling;
+      const icon = element.querySelector('i');
+      
+      answer.classList.toggle('open');
+      icon.style.transform = answer.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    // Live chat toggle
+    function toggleLiveChat() {
+      alert('Live chat feature coming soon! Please use the contact form or call us directly.');
+    }
+
+    // Form input animations
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+      });
+      
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+
+    // Initialize particles
+    createParticles();
+
+    // Phone number formatting
+    document.getElementById('phone').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.startsWith('234')) {
+        value = '+' + value;
+      } else if (value.startsWith('0')) {
+        value = '+234' + value.substring(1);
+      }
+      e.target.value = value;
+    });
+
+    // Add typing animation to form labels
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('input', function() {
+        if (this.value) {
+          this.style.borderColor = '#22c55e';
+        } else {
+          this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
